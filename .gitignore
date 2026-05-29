@@ -13,3 +13,6 @@
 
 # 保留 .gitignore 自己
 !/.gitignore
+!/.clang-tidy
+!/out
+!/benchmark

@@ -1,0 +1,147 @@
+------------------------------------------------------------------
+Benchmark                        Time             CPU   Iterations
+------------------------------------------------------------------
+BM_DefaultCtor_mean           14.6 ns         14.5 ns            3
+BM_DefaultCtor_median         14.7 ns         14.5 ns            3
+BM_DefaultCtor_stddev        0.201 ns        0.197 ns            3
+BM_DefaultCtor_cv             1.38 %          1.36 %             3
+BM_UintCtor_mean              14.5 ns         14.3 ns            3
+BM_UintCtor_median            14.5 ns         14.3 ns            3
+BM_UintCtor_stddev           0.084 ns        0.079 ns            3
+BM_UintCtor_cv                0.58 %          0.55 %             3
+BM_JarrayCtor/1_mean          16.7 ns         16.5 ns            3 bytes_per_second=231.507Mi/s
+BM_JarrayCtor/1_median        16.7 ns         16.6 ns            3 bytes_per_second=230.411Mi/s
+BM_JarrayCtor/1_stddev       0.155 ns        0.136 ns            3 bytes_per_second=1.91423Mi/s
+BM_JarrayCtor/1_cv            0.93 %          0.82 %             3 bytes_per_second=0.83%
+BM_JarrayCtor/4_mean          16.4 ns         16.2 ns            3 bytes_per_second=939.303Mi/s
+BM_JarrayCtor/4_median        16.3 ns         16.2 ns            3 bytes_per_second=944.749Mi/s
+BM_JarrayCtor/4_stddev       0.352 ns        0.357 ns            3 bytes_per_second=20.4399Mi/s
+BM_JarrayCtor/4_cv            2.14 %          2.19 %             3 bytes_per_second=2.18%
+BM_JarrayCtor/16_mean         20.8 ns         18.9 ns            3 bytes_per_second=3.1683Gi/s
+BM_JarrayCtor/16_median       19.5 ns         19.1 ns            3 bytes_per_second=3.11578Gi/s
+BM_JarrayCtor/16_stddev       4.07 ns         1.52 ns            3 bytes_per_second=265.969Mi/s
+BM_JarrayCtor/16_cv          19.56 %          8.03 %             3 bytes_per_second=8.20%
+BM_JarrayCtor/64_mean         35.2 ns         34.8 ns            3 bytes_per_second=6.87733Gi/s
+BM_JarrayCtor/64_median       36.0 ns         35.6 ns            3 bytes_per_second=6.70037Gi/s
+BM_JarrayCtor/64_stddev       2.48 ns         2.39 ns            3 bytes_per_second=500.517Mi/s
+BM_JarrayCtor/64_cv           7.03 %          6.88 %             3 bytes_per_second=7.11%
+BM_CopyCtor/1_mean            19.8 ns         19.5 ns            3
+BM_CopyCtor/1_median          19.7 ns         19.5 ns            3
+BM_CopyCtor/1_stddev         0.838 ns        0.800 ns            3
+BM_CopyCtor/1_cv              4.24 %          4.11 %             3
+BM_CopyCtor/4_mean            18.9 ns         18.7 ns            3
+BM_CopyCtor/4_median          18.8 ns         18.7 ns            3
+BM_CopyCtor/4_stddev         0.175 ns        0.157 ns            3
+BM_CopyCtor/4_cv              0.93 %          0.84 %             3
+BM_CopyCtor/16_mean           17.5 ns         17.3 ns            3
+BM_CopyCtor/16_median         17.5 ns         17.3 ns            3
+BM_CopyCtor/16_stddev        0.038 ns        0.019 ns            3
+BM_CopyCtor/16_cv             0.22 %          0.11 %             3
+BM_CopyCtor/64_mean           33.0 ns         32.7 ns            3
+BM_CopyCtor/64_median         33.0 ns         32.6 ns            3
+BM_CopyCtor/64_stddev        0.061 ns        0.093 ns            3
+BM_CopyCtor/64_cv             0.19 %          0.28 %             3
+BM_CopyAssign/1_mean          19.7 ns         19.5 ns            3
+BM_CopyAssign/1_median        19.6 ns         19.4 ns            3
+BM_CopyAssign/1_stddev       0.514 ns        0.506 ns            3
+BM_CopyAssign/1_cv            2.61 %          2.59 %             3
+BM_CopyAssign/4_mean          19.2 ns         19.0 ns            3
+BM_CopyAssign/4_median        19.1 ns         18.9 ns            3
+BM_CopyAssign/4_stddev       0.235 ns        0.232 ns            3
+BM_CopyAssign/4_cv            1.23 %          1.22 %             3
+BM_CopyAssign/16_mean         17.7 ns         17.6 ns            3
+BM_CopyAssign/16_median       17.6 ns         17.5 ns            3
+BM_CopyAssign/16_stddev      0.367 ns        0.337 ns            3
+BM_CopyAssign/16_cv           2.07 %          1.91 %             3
+BM_CopyAssign/64_mean         34.9 ns         34.5 ns            3
+BM_CopyAssign/64_median       34.9 ns         34.5 ns            3
+BM_CopyAssign/64_stddev      0.256 ns        0.238 ns            3
+BM_CopyAssign/64_cv           0.73 %          0.69 %             3
+BM_MoveCtor/1_mean            17.7 ns         16.4 ns            3
+BM_MoveCtor/1_median          15.6 ns         15.4 ns            3
+BM_MoveCtor/1_stddev          3.76 ns         1.83 ns            3
+BM_MoveCtor/1_cv             21.20 %         11.17 %             3
+BM_MoveCtor/4_mean            49.8 ns         49.2 ns            3
+BM_MoveCtor/4_median          50.1 ns         49.4 ns            3
+BM_MoveCtor/4_stddev         0.593 ns        0.543 ns            3
+BM_MoveCtor/4_cv              1.19 %          1.10 %             3
+BM_MoveCtor/16_mean           47.3 ns         46.8 ns            3
+BM_MoveCtor/16_median         47.4 ns         46.7 ns            3
+BM_MoveCtor/16_stddev         1.02 ns         1.02 ns            3
+BM_MoveCtor/16_cv             2.16 %          2.17 %             3
+BM_MoveCtor/64_mean           70.5 ns         69.7 ns            3
+BM_MoveCtor/64_median         71.2 ns         70.3 ns            3
+BM_MoveCtor/64_stddev         2.02 ns         1.97 ns            3
+BM_MoveCtor/64_cv             2.87 %          2.82 %             3
+BM_MoveAssign/1_mean          46.8 ns         46.2 ns            3
+BM_MoveAssign/1_median        46.6 ns         46.1 ns            3
+BM_MoveAssign/1_stddev       0.387 ns        0.345 ns            3
+BM_MoveAssign/1_cv            0.83 %          0.75 %             3
+BM_MoveAssign/4_mean          65.9 ns         65.3 ns            3
+BM_MoveAssign/4_median        65.5 ns         64.8 ns            3
+BM_MoveAssign/4_stddev        1.07 ns         1.01 ns            3
+BM_MoveAssign/4_cv            1.62 %          1.55 %             3
+BM_MoveAssign/16_mean         77.5 ns         76.6 ns            3
+BM_MoveAssign/16_median       78.3 ns         77.2 ns            3
+BM_MoveAssign/16_stddev       1.52 ns         1.38 ns            3
+BM_MoveAssign/16_cv           1.96 %          1.81 %             3
+BM_MoveAssign/64_mean         89.7 ns         88.8 ns            3
+BM_MoveAssign/64_median       90.2 ns         89.5 ns            3
+BM_MoveAssign/64_stddev       1.13 ns         1.23 ns            3
+BM_MoveAssign/64_cv           1.26 %          1.39 %             3
+BM_Clear/1_mean                435 ns          433 ns            3
+BM_Clear/1_median              435 ns          433 ns            3
+BM_Clear/1_stddev            0.434 ns        0.441 ns            3
+BM_Clear/1_cv                 0.10 %          0.10 %             3
+BM_Clear/16_mean               432 ns          432 ns            3
+BM_Clear/16_median             432 ns          432 ns            3
+BM_Clear/16_stddev           0.444 ns        0.373 ns            3
+BM_Clear/16_cv                0.10 %          0.09 %             3
+BM_Clear/64_mean               431 ns          431 ns            3
+BM_Clear/64_median             431 ns          431 ns            3
+BM_Clear/64_stddev            2.31 ns         2.12 ns            3
+BM_Clear/64_cv                0.54 %          0.49 %             3
+BM_Reset/1_mean                430 ns          430 ns            3
+BM_Reset/1_median              431 ns          429 ns            3
+BM_Reset/1_stddev            0.893 ns         1.63 ns            3
+BM_Reset/1_cv                 0.21 %          0.38 %             3
+BM_Reset/16_mean               454 ns          444 ns            3
+BM_Reset/16_median             430 ns          430 ns            3
+BM_Reset/16_stddev            41.6 ns         25.9 ns            3
+BM_Reset/16_cv                9.15 %          5.82 %             3
+BM_Reset/64_mean               457 ns          452 ns            3
+BM_Reset/64_median             453 ns          449 ns            3
+BM_Reset/64_stddev            23.6 ns         17.8 ns            3
+BM_Reset/64_cv                5.16 %          3.95 %             3
+BM_Mul/1_mean                 49.7 ns         48.9 ns            3 bytes_per_second=77.9605Mi/s
+BM_Mul/1_median               50.0 ns         49.1 ns            3 bytes_per_second=77.6221Mi/s
+BM_Mul/1_stddev               1.32 ns        0.949 ns            3 bytes_per_second=1.52089Mi/s
+BM_Mul/1_cv                   2.65 %          1.94 %             3 bytes_per_second=1.95%
+BM_Mul/4_mean                 48.7 ns         47.5 ns            3 bytes_per_second=321.572Mi/s
+BM_Mul/4_median               47.4 ns         47.0 ns            3 bytes_per_second=324.773Mi/s
+BM_Mul/4_stddev               3.14 ns         1.74 ns            3 bytes_per_second=11.6015Mi/s
+BM_Mul/4_cv                   6.45 %          3.66 %             3 bytes_per_second=3.61%
+BM_Mul/16_mean                50.2 ns         49.8 ns            3 bytes_per_second=1.19628Gi/s
+BM_Mul/16_median              50.3 ns         49.9 ns            3 bytes_per_second=1.19426Gi/s
+BM_Mul/16_stddev             0.445 ns        0.553 ns            3 bytes_per_second=13.6234Mi/s
+BM_Mul/16_cv                  0.89 %          1.11 %             3 bytes_per_second=1.11%
+BM_Mul/64_mean                74.7 ns         74.0 ns            3 bytes_per_second=3.22039Gi/s
+BM_Mul/64_median              74.3 ns         73.7 ns            3 bytes_per_second=3.23507Gi/s
+BM_Mul/64_stddev             0.963 ns        0.804 ns            3 bytes_per_second=35.61Mi/s
+BM_Mul/64_cv                  1.29 %          1.09 %             3 bytes_per_second=1.08%
+BM_Multiply/1_mean            47.6 ns         47.1 ns            3 bytes_per_second=162.023Mi/s
+BM_Multiply/1_median          47.5 ns         46.9 ns            3 bytes_per_second=162.682Mi/s
+BM_Multiply/1_stddev         0.638 ns        0.595 ns            3 bytes_per_second=2.03415Mi/s
+BM_Multiply/1_cv              1.34 %          1.26 %             3 bytes_per_second=1.26%
+BM_Multiply/4_mean            70.5 ns         68.0 ns            3 bytes_per_second=449.223Mi/s
+BM_Multiply/4_median          72.1 ns         68.6 ns            3 bytes_per_second=444.555Mi/s
+BM_Multiply/4_stddev          3.57 ns         2.21 ns            3 bytes_per_second=14.8307Mi/s
+BM_Multiply/4_cv              5.06 %          3.26 %             3 bytes_per_second=3.30%
+BM_Multiply/16_mean            322 ns          310 ns            3 bytes_per_second=394.322Mi/s
+BM_Multiply/16_median          316 ns          306 ns            3 bytes_per_second=398.5Mi/s
+BM_Multiply/16_stddev         25.9 ns         18.7 ns            3 bytes_per_second=23.3532Mi/s
+BM_Multiply/16_cv             8.06 %          6.02 %             3 bytes_per_second=5.92%
+BM_Multiply/64_mean           5127 ns         4173 ns            3 bytes_per_second=117.761Mi/s
+BM_Multiply/64_median         4064 ns         3966 ns            3 bytes_per_second=123.108Mi/s
+BM_Multiply/64_stddev         1945 ns          420 ns            3 bytes_per_second=11.2182Mi/s
+BM_Multiply/64_cv            37.94 %         10.06 %             3 bytes_per_second=9.53%

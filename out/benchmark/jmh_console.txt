@@ -1,0 +1,1060 @@
+# WARNING: JMH lock is ignored by user request, make sure no other JMH instances are running
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_Clear
+# Parameters: (limbs = 1)
+
+# Run progress: 0.00% complete, ETA 00:01:30
+# Fork: 1 of 1
+# Warmup Iteration   1: 1.284 ns/op
+# Warmup Iteration   2: 1.278 ns/op
+Iteration   1: 1.270 ns/op
+Iteration   2: 1.270 ns/op
+Iteration   3: 1.300 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_Clear":
+  1.280 ±(99.9%) 0.314 ns/op [Average]
+  (min, avg, max) = (1.270, 1.280, 1.300), stdev = 0.017
+  CI (99.9%): [0.966, 1.594] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_Clear
+# Parameters: (limbs = 16)
+
+# Run progress: 2.78% complete, ETA 00:01:37
+# Fork: 1 of 1
+# Warmup Iteration   1: 2.815 ns/op
+# Warmup Iteration   2: 2.416 ns/op
+Iteration   1: 3.095 ns/op
+Iteration   2: 2.421 ns/op
+Iteration   3: 2.829 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_Clear":
+  2.782 ±(99.9%) 6.197 ns/op [Average]
+  (min, avg, max) = (2.421, 2.782, 3.095), stdev = 0.340
+  CI (99.9%): [≈ 0, 8.979] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_Clear
+# Parameters: (limbs = 64)
+
+# Run progress: 5.56% complete, ETA 00:01:35
+# Fork: 1 of 1
+# Warmup Iteration   1: 35.726 ns/op
+# Warmup Iteration   2: 2.813 ns/op
+Iteration   1: 30.365 ns/op
+Iteration   2: 2.815 ns/op
+Iteration   3: 26.171 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_Clear":
+  19.784 ±(99.9%) 270.814 ns/op [Average]
+  (min, avg, max) = (2.815, 19.784, 30.365), stdev = 14.844
+  CI (99.9%): [≈ 0, 290.598] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_CopyAssign
+# Parameters: (limbs = 1)
+
+# Run progress: 8.33% complete, ETA 00:01:31
+# Fork: 1 of 1
+# Warmup Iteration   1: 2.043 ns/op
+# Warmup Iteration   2: 2.041 ns/op
+Iteration   1: 2.071 ns/op
+Iteration   2: 2.269 ns/op
+Iteration   3: 2.237 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_CopyAssign":
+  2.193 ±(99.9%) 1.943 ns/op [Average]
+  (min, avg, max) = (2.071, 2.193, 2.269), stdev = 0.107
+  CI (99.9%): [0.249, 4.136] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_CopyAssign
+# Parameters: (limbs = 4)
+
+# Run progress: 11.11% complete, ETA 00:01:27
+# Fork: 1 of 1
+# Warmup Iteration   1: 2.096 ns/op
+# Warmup Iteration   2: 2.066 ns/op
+Iteration   1: 2.125 ns/op
+Iteration   2: 2.094 ns/op
+Iteration   3: 2.034 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_CopyAssign":
+  2.084 ±(99.9%) 0.848 ns/op [Average]
+  (min, avg, max) = (2.034, 2.084, 2.125), stdev = 0.046
+  CI (99.9%): [1.237, 2.932] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_CopyAssign
+# Parameters: (limbs = 16)
+
+# Run progress: 13.89% complete, ETA 00:01:24
+# Fork: 1 of 1
+# Warmup Iteration   1: 2.357 ns/op
+# Warmup Iteration   2: 2.309 ns/op
+Iteration   1: 2.394 ns/op
+Iteration   2: 2.288 ns/op
+Iteration   3: 2.293 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_CopyAssign":
+  2.325 ±(99.9%) 1.089 ns/op [Average]
+  (min, avg, max) = (2.288, 2.325, 2.394), stdev = 0.060
+  CI (99.9%): [1.236, 3.414] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_CopyAssign
+# Parameters: (limbs = 64)
+
+# Run progress: 16.67% complete, ETA 00:01:21
+# Fork: 1 of 1
+# Warmup Iteration   1: 4.564 ns/op
+# Warmup Iteration   2: 4.456 ns/op
+Iteration   1: 4.373 ns/op
+Iteration   2: 4.488 ns/op
+Iteration   3: 4.451 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_CopyAssign":
+  4.437 ±(99.9%) 1.072 ns/op [Average]
+  (min, avg, max) = (4.373, 4.437, 4.488), stdev = 0.059
+  CI (99.9%): [3.366, 5.509] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_CopyCtor
+# Parameters: (limbs = 1)
+
+# Run progress: 19.44% complete, ETA 00:01:18
+# Fork: 1 of 1
+# Warmup Iteration   1: 6.609 ns/op
+# Warmup Iteration   2: 4.163 ns/op
+Iteration   1: 3.985 ns/op
+Iteration   2: 4.111 ns/op
+Iteration   3: 4.309 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_CopyCtor":
+  4.135 ±(99.9%) 2.984 ns/op [Average]
+  (min, avg, max) = (3.985, 4.135, 4.309), stdev = 0.164
+  CI (99.9%): [1.151, 7.119] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_CopyCtor
+# Parameters: (limbs = 4)
+
+# Run progress: 22.22% complete, ETA 00:01:16
+# Fork: 1 of 1
+# Warmup Iteration   1: 7.033 ns/op
+# Warmup Iteration   2: 4.707 ns/op
+Iteration   1: 4.035 ns/op
+Iteration   2: 3.939 ns/op
+Iteration   3: 3.896 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_CopyCtor":
+  3.957 ±(99.9%) 1.295 ns/op [Average]
+  (min, avg, max) = (3.896, 3.957, 4.035), stdev = 0.071
+  CI (99.9%): [2.662, 5.252] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_CopyCtor
+# Parameters: (limbs = 16)
+
+# Run progress: 25.00% complete, ETA 00:01:14
+# Fork: 1 of 1
+# Warmup Iteration   1: 8.884 ns/op
+# Warmup Iteration   2: 10.525 ns/op
+Iteration   1: 5.306 ns/op
+Iteration   2: 4.967 ns/op
+Iteration   3: 5.015 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_CopyCtor":
+  5.096 ±(99.9%) 3.343 ns/op [Average]
+  (min, avg, max) = (4.967, 5.096, 5.306), stdev = 0.183
+  CI (99.9%): [1.753, 8.439] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_CopyCtor
+# Parameters: (limbs = 64)
+
+# Run progress: 27.78% complete, ETA 00:01:11
+# Fork: 1 of 1
+# Warmup Iteration   1: 15.436 ns/op
+# Warmup Iteration   2: 18.687 ns/op
+Iteration   1: 9.345 ns/op
+Iteration   2: 9.456 ns/op
+Iteration   3: 13.630 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_CopyCtor":
+  10.810 ±(99.9%) 44.558 ns/op [Average]
+  (min, avg, max) = (9.345, 10.810, 13.630), stdev = 2.442
+  CI (99.9%): [≈ 0, 55.369] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_DefaultCtor
+
+# Run progress: 30.56% complete, ETA 00:01:08
+# Fork: 1 of 1
+# Warmup Iteration   1: 4.088 ns/op
+# Warmup Iteration   2: 2.791 ns/op
+Iteration   1: 2.715 ns/op
+Iteration   2: 2.733 ns/op
+Iteration   3: 2.800 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_DefaultCtor":
+  2.749 ±(99.9%) 0.818 ns/op [Average]
+  (min, avg, max) = (2.715, 2.749, 2.800), stdev = 0.045
+  CI (99.9%): [1.931, 3.567] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_JarrayCtor
+# Parameters: (limbs = 1)
+
+# Run progress: 33.33% complete, ETA 00:01:05
+# Fork: 1 of 1
+# Warmup Iteration   1: 5.775 ns/op
+# Warmup Iteration   2: 5.002 ns/op
+Iteration   1: 4.807 ns/op
+Iteration   2: 4.695 ns/op
+Iteration   3: 5.014 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_JarrayCtor":
+  4.839 ±(99.9%) 2.956 ns/op [Average]
+  (min, avg, max) = (4.695, 4.839, 5.014), stdev = 0.162
+  CI (99.9%): [1.883, 7.794] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_JarrayCtor
+# Parameters: (limbs = 4)
+
+# Run progress: 36.11% complete, ETA 00:01:02
+# Fork: 1 of 1
+# Warmup Iteration   1: 5.825 ns/op
+# Warmup Iteration   2: 4.837 ns/op
+Iteration   1: 4.705 ns/op
+Iteration   2: 4.728 ns/op
+Iteration   3: 4.698 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_JarrayCtor":
+  4.711 ±(99.9%) 0.290 ns/op [Average]
+  (min, avg, max) = (4.698, 4.711, 4.728), stdev = 0.016
+  CI (99.9%): [4.420, 5.001] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_JarrayCtor
+# Parameters: (limbs = 16)
+
+# Run progress: 38.89% complete, ETA 00:01:00
+# Fork: 1 of 1
+# Warmup Iteration   1: 9.565 ns/op
+# Warmup Iteration   2: 5.986 ns/op
+Iteration   1: 5.216 ns/op
+Iteration   2: 5.138 ns/op
+Iteration   3: 6.959 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_JarrayCtor":
+  5.771 ±(99.9%) 18.780 ns/op [Average]
+  (min, avg, max) = (5.138, 5.771, 6.959), stdev = 1.029
+  CI (99.9%): [≈ 0, 24.551] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_JarrayCtor
+# Parameters: (limbs = 64)
+
+# Run progress: 41.67% complete, ETA 00:00:57
+# Fork: 1 of 1
+# Warmup Iteration   1: 21.345 ns/op
+# Warmup Iteration   2: 12.418 ns/op
+Iteration   1: 9.335 ns/op
+Iteration   2: 9.164 ns/op
+Iteration   3: 9.145 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_JarrayCtor":
+  9.215 ±(99.9%) 1.907 ns/op [Average]
+  (min, avg, max) = (9.145, 9.215, 9.335), stdev = 0.105
+  CI (99.9%): [7.307, 11.122] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_MoveAssign
+# Parameters: (limbs = 1)
+
+# Run progress: 44.44% complete, ETA 00:00:54
+# Fork: 1 of 1
+# Warmup Iteration   1: 8.580 ns/op
+# Warmup Iteration   2: 6.029 ns/op
+Iteration   1: 6.929 ns/op
+Iteration   2: 6.132 ns/op
+Iteration   3: 5.940 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_MoveAssign":
+  6.334 ±(99.9%) 9.569 ns/op [Average]
+  (min, avg, max) = (5.940, 6.334, 6.929), stdev = 0.524
+  CI (99.9%): [≈ 0, 15.902] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_MoveAssign
+# Parameters: (limbs = 4)
+
+# Run progress: 47.22% complete, ETA 00:00:51
+# Fork: 1 of 1
+# Warmup Iteration   1: 13.392 ns/op
+# Warmup Iteration   2: 10.217 ns/op
+Iteration   1: 7.947 ns/op
+Iteration   2: 7.954 ns/op
+Iteration   3: 7.948 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_MoveAssign":
+  7.950 ±(99.9%) 0.067 ns/op [Average]
+  (min, avg, max) = (7.947, 7.950, 7.954), stdev = 0.004
+  CI (99.9%): [7.882, 8.017] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_MoveAssign
+# Parameters: (limbs = 16)
+
+# Run progress: 50.00% complete, ETA 00:00:49
+# Fork: 1 of 1
+# Warmup Iteration   1: 19.525 ns/op
+# Warmup Iteration   2: 15.512 ns/op
+Iteration   1: 12.137 ns/op
+Iteration   2: 12.290 ns/op
+Iteration   3: 12.296 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_MoveAssign":
+  12.241 ±(99.9%) 1.640 ns/op [Average]
+  (min, avg, max) = (12.137, 12.241, 12.296), stdev = 0.090
+  CI (99.9%): [10.601, 13.881] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_MoveAssign
+# Parameters: (limbs = 64)
+
+# Run progress: 52.78% complete, ETA 00:00:46
+# Fork: 1 of 1
+# Warmup Iteration   1: 51.360 ns/op
+# Warmup Iteration   2: 30.646 ns/op
+Iteration   1: 25.110 ns/op
+Iteration   2: 25.014 ns/op
+Iteration   3: 32.974 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_MoveAssign":
+  27.699 ±(99.9%) 83.342 ns/op [Average]
+  (min, avg, max) = (25.014, 27.699, 32.974), stdev = 4.568
+  CI (99.9%): [≈ 0, 111.042] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_MoveCtor
+# Parameters: (limbs = 1)
+
+# Run progress: 55.56% complete, ETA 00:00:43
+# Fork: 1 of 1
+# Warmup Iteration   1: 9.206 ns/op
+# Warmup Iteration   2: 7.223 ns/op
+Iteration   1: 6.622 ns/op
+Iteration   2: 6.645 ns/op
+Iteration   3: 6.961 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_MoveCtor":
+  6.743 ±(99.9%) 3.452 ns/op [Average]
+  (min, avg, max) = (6.622, 6.743, 6.961), stdev = 0.189
+  CI (99.9%): [3.290, 10.195] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_MoveCtor
+# Parameters: (limbs = 4)
+
+# Run progress: 58.33% complete, ETA 00:00:40
+# Fork: 1 of 1
+# Warmup Iteration   1: 10.266 ns/op
+# Warmup Iteration   2: 8.917 ns/op
+Iteration   1: 7.357 ns/op
+Iteration   2: 7.858 ns/op
+Iteration   3: 9.907 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_MoveCtor":
+  8.374 ±(99.9%) 24.649 ns/op [Average]
+  (min, avg, max) = (7.357, 8.374, 9.907), stdev = 1.351
+  CI (99.9%): [≈ 0, 33.023] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_MoveCtor
+# Parameters: (limbs = 16)
+
+# Run progress: 61.11% complete, ETA 00:00:38
+# Fork: 1 of 1
+# Warmup Iteration   1: 24.709 ns/op
+# Warmup Iteration   2: 15.687 ns/op
+Iteration   1: 12.032 ns/op
+Iteration   2: 12.071 ns/op
+Iteration   3: 12.183 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_MoveCtor":
+  12.095 ±(99.9%) 1.432 ns/op [Average]
+  (min, avg, max) = (12.032, 12.095, 12.183), stdev = 0.078
+  CI (99.9%): [10.663, 13.527] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_MoveCtor
+# Parameters: (limbs = 64)
+
+# Run progress: 63.89% complete, ETA 00:00:35
+# Fork: 1 of 1
+# Warmup Iteration   1: 44.287 ns/op
+# Warmup Iteration   2: 25.033 ns/op
+Iteration   1: 26.186 ns/op
+Iteration   2: 24.914 ns/op
+Iteration   3: 23.095 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_MoveCtor":
+  24.731 ±(99.9%) 28.343 ns/op [Average]
+  (min, avg, max) = (23.095, 24.731, 26.186), stdev = 1.554
+  CI (99.9%): [≈ 0, 53.075] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_Mul
+# Parameters: (limbs = 1)
+
+# Run progress: 66.67% complete, ETA 00:00:32
+# Fork: 1 of 1
+# Warmup Iteration   1: 2.443 ns/op
+# Warmup Iteration   2: 2.094 ns/op
+Iteration   1: 2.071 ns/op
+Iteration   2: 2.060 ns/op
+Iteration   3: 2.065 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_Mul":
+  2.065 ±(99.9%) 0.099 ns/op [Average]
+  (min, avg, max) = (2.060, 2.065, 2.071), stdev = 0.005
+  CI (99.9%): [1.966, 2.164] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_Mul
+# Parameters: (limbs = 4)
+
+# Run progress: 69.44% complete, ETA 00:00:29
+# Fork: 1 of 1
+# Warmup Iteration   1: 3.347 ns/op
+# Warmup Iteration   2: 3.366 ns/op
+Iteration   1: 3.384 ns/op
+Iteration   2: 3.371 ns/op
+Iteration   3: 3.359 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_Mul":
+  3.371 ±(99.9%) 0.230 ns/op [Average]
+  (min, avg, max) = (3.359, 3.371, 3.384), stdev = 0.013
+  CI (99.9%): [3.141, 3.602] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_Mul
+# Parameters: (limbs = 16)
+
+# Run progress: 72.22% complete, ETA 00:00:27
+# Fork: 1 of 1
+# Warmup Iteration   1: 6.121 ns/op
+# Warmup Iteration   2: 6.165 ns/op
+Iteration   1: 6.031 ns/op
+Iteration   2: 6.029 ns/op
+Iteration   3: 6.114 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_Mul":
+  6.058 ±(99.9%) 0.889 ns/op [Average]
+  (min, avg, max) = (6.029, 6.058, 6.114), stdev = 0.049
+  CI (99.9%): [5.169, 6.947] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_Mul
+# Parameters: (limbs = 64)
+
+# Run progress: 75.00% complete, ETA 00:00:24
+# Fork: 1 of 1
+# Warmup Iteration   1: 27.511 ns/op
+# Warmup Iteration   2: 33.523 ns/op
+Iteration   1: 24.449 ns/op
+Iteration   2: 24.617 ns/op
+Iteration   3: 24.327 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_Mul":
+  24.464 ±(99.9%) 2.659 ns/op [Average]
+  (min, avg, max) = (24.327, 24.464, 24.617), stdev = 0.146
+  CI (99.9%): [21.805, 27.124] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_Multiply
+# Parameters: (limbs = 1)
+
+# Run progress: 77.78% complete, ETA 00:00:21
+# Fork: 1 of 1
+# Warmup Iteration   1: 2.774 ns/op
+# Warmup Iteration   2: 2.910 ns/op
+Iteration   1: 2.487 ns/op
+Iteration   2: 2.715 ns/op
+Iteration   3: 2.475 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_Multiply":
+  2.559 ±(99.9%) 2.467 ns/op [Average]
+  (min, avg, max) = (2.475, 2.559, 2.715), stdev = 0.135
+  CI (99.9%): [0.092, 5.026] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_Multiply
+# Parameters: (limbs = 4)
+
+# Run progress: 80.56% complete, ETA 00:00:19
+# Fork: 1 of 1
+# Warmup Iteration   1: 12.636 ns/op
+# Warmup Iteration   2: 12.635 ns/op
+Iteration   1: 13.075 ns/op
+Iteration   2: 12.799 ns/op
+Iteration   3: 13.627 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_Multiply":
+  13.167 ±(99.9%) 7.688 ns/op [Average]
+  (min, avg, max) = (12.799, 13.167, 13.627), stdev = 0.421
+  CI (99.9%): [5.479, 20.855] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_Multiply
+# Parameters: (limbs = 16)
+
+# Run progress: 83.33% complete, ETA 00:00:16
+# Fork: 1 of 1
+# Warmup Iteration   1: 119.857 ns/op
+# Warmup Iteration   2: 123.455 ns/op
+Iteration   1: 111.158 ns/op
+Iteration   2: 112.446 ns/op
+Iteration   3: 110.313 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_Multiply":
+  111.306 ±(99.9%) 19.598 ns/op [Average]
+  (min, avg, max) = (110.313, 111.306, 112.446), stdev = 1.074
+  CI (99.9%): [91.707, 130.904] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_Multiply
+# Parameters: (limbs = 64)
+
+# Run progress: 86.11% complete, ETA 00:00:13
+# Fork: 1 of 1
+# Warmup Iteration   1: 1925.310 ns/op
+# Warmup Iteration   2: 1842.101 ns/op
+Iteration   1: 1852.351 ns/op
+Iteration   2: 1718.361 ns/op
+Iteration   3: 1718.819 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_Multiply":
+  1763.177 ±(99.9%) 1408.917 ns/op [Average]
+  (min, avg, max) = (1718.361, 1763.177, 1852.351), stdev = 77.228
+  CI (99.9%): [354.260, 3172.094] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_Reset
+# Parameters: (limbs = 1)
+
+# Run progress: 88.89% complete, ETA 00:00:10
+# Fork: 1 of 1
+# Warmup Iteration   1: 4.018 ns/op
+# Warmup Iteration   2: 0.526 ns/op
+Iteration   1: 0.596 ns/op
+Iteration   2: 0.518 ns/op
+Iteration   3: 0.607 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_Reset":
+  0.574 ±(99.9%) 0.882 ns/op [Average]
+  (min, avg, max) = (0.518, 0.574, 0.607), stdev = 0.048
+  CI (99.9%): [≈ 0, 1.456] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_Reset
+# Parameters: (limbs = 16)
+
+# Run progress: 91.67% complete, ETA 00:00:08
+# Fork: 1 of 1
+# Warmup Iteration   1: 0.594 ns/op
+# Warmup Iteration   2: 0.523 ns/op
+Iteration   1: 0.547 ns/op
+Iteration   2: 0.546 ns/op
+Iteration   3: 0.611 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_Reset":
+  0.568 ±(99.9%) 0.677 ns/op [Average]
+  (min, avg, max) = (0.546, 0.568, 0.611), stdev = 0.037
+  CI (99.9%): [≈ 0, 1.245] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_Reset
+# Parameters: (limbs = 64)
+
+# Run progress: 94.44% complete, ETA 00:00:05
+# Fork: 1 of 1
+# Warmup Iteration   1: 0.528 ns/op
+# Warmup Iteration   2: 0.693 ns/op
+Iteration   1: 0.603 ns/op
+Iteration   2: 0.519 ns/op
+Iteration   3: 0.520 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_Reset":
+  0.547 ±(99.9%) 0.875 ns/op [Average]
+  (min, avg, max) = (0.519, 0.547, 0.603), stdev = 0.048
+  CI (99.9%): [≈ 0, 1.422] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.5, Java HotSpot(TM) 64-Bit Server VM, 21.0.5+9-LTS-239
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java
+# VM options: -Djmh.ignoreLock=true --patch-module=java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jdk-patch
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 500 ms each
+# Measurement: 3 iterations, 500 ms each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: bench.mutable.MutableBigIntJmh.BM_UintCtor
+
+# Run progress: 97.22% complete, ETA 00:00:02
+# Fork: 1 of 1
+# Warmup Iteration   1: 6.225 ns/op
+# Warmup Iteration   2: 2.859 ns/op
+Iteration   1: 2.840 ns/op
+Iteration   2: 2.901 ns/op
+Iteration   3: 2.906 ns/op
+
+
+Result "bench.mutable.MutableBigIntJmh.BM_UintCtor":
+  2.882 ±(99.9%) 0.671 ns/op [Average]
+  (min, avg, max) = (2.840, 2.882, 2.906), stdev = 0.037
+  CI (99.9%): [2.212, 3.553] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:01:37
+
+REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
+why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
+experiments, perform baseline and negative tests that provide experimental control, make sure
+the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.
+Do not assume the numbers tell you what you want them to tell.
+
+NOTE: Current JVM experimentally supports Compiler Blackholes, and they are in use. Please exercise
+extra caution when trusting the results, look into the generated code to check the benchmark still
+works, and factor in a small probability of new VM bugs. Additionally, while comparisons between
+different JVMs are already problematic, the performance difference caused by different Blackhole
+modes can be very significant. Please make sure you use the consistent Blackhole mode for comparisons.
+
+Benchmark                        (limbs)  Mode  Cnt     Score      Error  Units
+MutableBigIntJmh.BM_Clear              1  avgt    3     1.280 ±    0.314  ns/op
+MutableBigIntJmh.BM_Clear             16  avgt    3     2.782 ±    6.197  ns/op
+MutableBigIntJmh.BM_Clear             64  avgt    3    19.784 ±  270.814  ns/op
+MutableBigIntJmh.BM_CopyAssign         1  avgt    3     2.193 ±    1.943  ns/op
+MutableBigIntJmh.BM_CopyAssign         4  avgt    3     2.084 ±    0.848  ns/op
+MutableBigIntJmh.BM_CopyAssign        16  avgt    3     2.325 ±    1.089  ns/op
+MutableBigIntJmh.BM_CopyAssign        64  avgt    3     4.437 ±    1.072  ns/op
+MutableBigIntJmh.BM_CopyCtor           1  avgt    3     4.135 ±    2.984  ns/op
+MutableBigIntJmh.BM_CopyCtor           4  avgt    3     3.957 ±    1.295  ns/op
+MutableBigIntJmh.BM_CopyCtor          16  avgt    3     5.096 ±    3.343  ns/op
+MutableBigIntJmh.BM_CopyCtor          64  avgt    3    10.810 ±   44.558  ns/op
+MutableBigIntJmh.BM_DefaultCtor      N/A  avgt    3     2.749 ±    0.818  ns/op
+MutableBigIntJmh.BM_JarrayCtor         1  avgt    3     4.839 ±    2.956  ns/op
+MutableBigIntJmh.BM_JarrayCtor         4  avgt    3     4.711 ±    0.290  ns/op
+MutableBigIntJmh.BM_JarrayCtor        16  avgt    3     5.771 ±   18.780  ns/op
+MutableBigIntJmh.BM_JarrayCtor        64  avgt    3     9.215 ±    1.907  ns/op
+MutableBigIntJmh.BM_MoveAssign         1  avgt    3     6.334 ±    9.569  ns/op
+MutableBigIntJmh.BM_MoveAssign         4  avgt    3     7.950 ±    0.067  ns/op
+MutableBigIntJmh.BM_MoveAssign        16  avgt    3    12.241 ±    1.640  ns/op
+MutableBigIntJmh.BM_MoveAssign        64  avgt    3    27.699 ±   83.342  ns/op
+MutableBigIntJmh.BM_MoveCtor           1  avgt    3     6.743 ±    3.452  ns/op
+MutableBigIntJmh.BM_MoveCtor           4  avgt    3     8.374 ±   24.649  ns/op
+MutableBigIntJmh.BM_MoveCtor          16  avgt    3    12.095 ±    1.432  ns/op
+MutableBigIntJmh.BM_MoveCtor          64  avgt    3    24.731 ±   28.343  ns/op
+MutableBigIntJmh.BM_Mul                1  avgt    3     2.065 ±    0.099  ns/op
+MutableBigIntJmh.BM_Mul                4  avgt    3     3.371 ±    0.230  ns/op
+MutableBigIntJmh.BM_Mul               16  avgt    3     6.058 ±    0.889  ns/op
+MutableBigIntJmh.BM_Mul               64  avgt    3    24.464 ±    2.659  ns/op
+MutableBigIntJmh.BM_Multiply           1  avgt    3     2.559 ±    2.467  ns/op
+MutableBigIntJmh.BM_Multiply           4  avgt    3    13.167 ±    7.688  ns/op
+MutableBigIntJmh.BM_Multiply          16  avgt    3   111.306 ±   19.598  ns/op
+MutableBigIntJmh.BM_Multiply          64  avgt    3  1763.177 ± 1408.917  ns/op
+MutableBigIntJmh.BM_Reset              1  avgt    3     0.574 ±    0.882  ns/op
+MutableBigIntJmh.BM_Reset             16  avgt    3     0.568 ±    0.677  ns/op
+MutableBigIntJmh.BM_Reset             64  avgt    3     0.547 ±    0.875  ns/op
+MutableBigIntJmh.BM_UintCtor         N/A  avgt    3     2.882 ±    0.671  ns/op
+
+Benchmark result is saved to /Users/leoli/claude-tmp/decimal-c++/out/benchmark/jmh.json

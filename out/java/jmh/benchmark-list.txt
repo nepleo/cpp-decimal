@@ -1,0 +1,15 @@
+java.math.MutableBigIntJmh.BM_DefaultCtor
+java.math.MutableBigIntJmh.BM_UintCtor
+java.math.MutableBigIntJmh.BM_JarrayCtor
+java.math.MutableBigIntJmh.BM_CopyCtor
+java.math.MutableBigIntJmh.BM_CopyAssign
+java.math.MutableBigIntJmh.BM_MoveCtor
+java.math.MutableBigIntJmh.BM_MoveAssign
+java.math.MutableBigIntJmh.BM_Clear
+java.math.MutableBigIntJmh.BM_Reset
+bench.mutable.MutableBigIntJmh.BM_Mul
+bench.mutable.MutableBigIntJmh.BM_Multiply
+bench.mutable.MutableBigIntJmh.BM_Divide
+bench.mutable.MutableBigIntJmh.BM_Sqrt
+bench.mutable.MutableBigIntJmh.BM_HybridGcd
+bench.mutable.MutableBigIntJmh.BM_ModInverse

@@ -1,0 +1,2 @@
+--patch-module
+java.base=/Users/leoli/claude-tmp/decimal-c++/out/java/jmh/../jdk-patch
