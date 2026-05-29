@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "jarray.h"
+#include "bigdecimal.h"
 
 TEST(JArrayTest, DefaultConstructor) {
   jarray<int> arr;
