@@ -1,0 +1,15 @@
+# 忽略根目录下所有内容
+/*
+
+# 但保留 src 目录
+!/src/
+!/src/**
+!/.clang-format
+!/CMakeLists.txt
+!/test/
+!/test/**
+!/javamath/
+!/javamath/**
+
+# 保留 .gitignore 自己
+!/.gitignore
