@@ -5955,11 +5955,9 @@ struct big_decimal {
   static const big_decimal ONE_HALF;
 
   // 内部构造: 同时设置 int_val, int_compact, scale, precision.
-  // =====================================================================
 
   big_decimal() = default;
 
-  // 内部构造: 同时设置 int_val, int_compact, scale, precision.
   // int_val_ 与 int_compact_ 同步; INFLATED 表示已膨胀到 bigint.
   big_decimal(bigint int_val, int64_t val, int32_t scale, int32_t prec)
       : int_val_(std::move(int_val)), scale_(scale), precision_(prec), int_compact_(val) {
@@ -6002,7 +6000,7 @@ struct big_decimal {
     return one > two;
   }
 
-  // 无 UNSIGNED比较两个 long 值是否大于等于.
+  // 无符号比较两个 long 值是否大于等于.
   static bool unsigned_long_compare_eq(uint64_t one, uint64_t two) {
     return one >= two;
   }
@@ -6111,8 +6109,11 @@ struct big_decimal {
     return bigint(val.signum_, val.mag_);
   }
 
-  // 若 int_val 为空则返回 compact 对应的 bigint, 否则返回 int_val.
+  // 返回未缩放 bigint; compact 时由 int_compact_ 构造.
   bigint inflated() const {
+    if (int_compact_ != INFLATED) {
+      return bigint::value_of(int_compact_);
+    }
     return int_val_;
   }
 
@@ -6148,7 +6149,6 @@ struct big_decimal {
   }
 
   // need_increment 计算的共享逻辑.
-  // int cmpFracHalf, boolean oddQuot)
   static bool common_need_increment(round_mode rounding_mode, int32_t qsign, int32_t cmp_frac_half, bool odd_quot) {
     switch (rounding_mode) {
       case round_mode::UNNECESSARY:
@@ -6187,7 +6187,7 @@ struct big_decimal {
     }
   }
 
-  // 根据 rounding mode 判断商是否需要加 1 (long 余数).
+  // 根据 rounding mode 判断 long 商是否需要加 1.
   static bool need_increment(int64_t ldivisor, round_mode rounding_mode, int32_t qsign, int64_t q, int64_t r) {
     // assert r != 0L
     int32_t cmp_frac_half;
@@ -6199,7 +6199,7 @@ struct big_decimal {
     return common_need_increment(rounding_mode, qsign, cmp_frac_half, (q & 1LL) != 0LL);
   }
 
-  // 根据 rounding mode 判断商是否需要加 1 (long 余数).
+  // 根据 rounding mode 判断商是否需要加 1 (mutable_bigint 余数为 long).
   static bool need_increment(int64_t ldivisor, round_mode rounding_mode, int32_t qsign, const mutable_bigint& mq,
                              int64_t r) {
     // assert r != 0L
@@ -6241,8 +6241,7 @@ struct big_decimal {
     return as_int;
   }
 
-  // =====================================================================
-
+  // 将 long 被除数除以 long 除数并按舍入模式舍入; round_mode::DOWN 时直接截断.
   static int64_t divide_and_round_64(int64_t ldividend, int64_t ldivisor, round_mode rounding_mode) {
     int32_t qsign;
     int64_t q = ldividend / ldivisor;
@@ -6293,6 +6292,8 @@ struct big_decimal {
     mq.normalize();
     return bigint(qsign, mq.to_int_array());
   }
+
+  // 内部除法: bigint 除以 long, 返回 scale 已设的 big_decimal.
   static big_decimal divide_and_round(const bigint& bdividend, int64_t ldivisor, int32_t scale, round_mode rm,
                                       int32_t pref_sc) {
     mutable_bigint mdividend(bdividend.mag_);
@@ -6319,6 +6320,7 @@ struct big_decimal {
     mq.normalize();
     return value_of(bigint(qsign, mq.to_int_array()), scale, 0);
   }
+
   // 将 bigint 除以 bigint 并按舍入模式舍入, 返回 bigint 商.
   static bigint divide_and_round(const bigint& bdividend, const bigint& bdivisor, round_mode rm) {
     bool is_rem_zero;
@@ -6337,6 +6339,7 @@ struct big_decimal {
     mq.normalize();
     return bigint(qsign, mq.to_int_array());
   }
+
   static big_decimal divide_and_round(const bigint& bdividend, const bigint& bdivisor, int32_t scale, round_mode rm,
                                       int32_t pref_sc) {
     bool is_rem_zero;
@@ -6366,6 +6369,7 @@ struct big_decimal {
     mq.normalize();
     return value_of(bigint(qsign, mq.to_int_array()), scale, 0);
   }
+
   // 将 bigint 除以 10 的幂并按舍入模式舍入.
   static bigint divide_and_round_by_10pow(const bigint& int_val, int32_t ten_pow, round_mode rm) {
     if (ten_pow < 19) {
@@ -6381,6 +6385,7 @@ struct big_decimal {
     }
     return big_decimal(bigint::ZERO, 0, scale, 1);
   }
+
   // 由未缩放 long 与 scale 构造 big_decimal.
   static big_decimal value_of(int64_t unscaled_val, int32_t scale) {
     if (scale == 0) {
@@ -6391,6 +6396,7 @@ struct big_decimal {
     }
     return big_decimal(unscaled_val == INFLATED ? bigint::value_of(INFLATED) : bigint{}, unscaled_val, scale, 0);
   }
+
   // 由未缩放值, scale 与精度缓存构造 big_decimal.
   static big_decimal value_of(int64_t unscaled_val, int32_t scale, int32_t prec) {
     if (scale == 0 && unscaled_val >= 0 && unscaled_val < 11) {
@@ -6401,6 +6407,7 @@ struct big_decimal {
     }
     return big_decimal(unscaled_val == INFLATED ? bigint::value_of(INFLATED) : bigint{}, unscaled_val, scale, prec);
   }
+
   // 将 long 转为 scale 为 0 的 big_decimal; 优先复用 [0,10] 缓存.
   static big_decimal value_of(int64_t val) {
     if (val >= 0 && val < 11) {
@@ -6411,6 +6418,7 @@ struct big_decimal {
     }
     return big_decimal(bigint::value_of(INFLATED), val, 0, 0);
   }
+
   // 由 bigint 未缩放值与 scale 构造 big_decimal.
   static big_decimal value_of(const bigint& int_val, int32_t scale, int32_t prec) {
     int64_t val = compact_val_for(int_val);
@@ -6422,6 +6430,7 @@ struct big_decimal {
     }
     return big_decimal(int_val, val, scale, prec);
   }
+
   // 用 double 的规范十进制字符串表示构造 big_decimal.
   static big_decimal value_of(double val) {
     return big_decimal(std::to_string(val));
@@ -6518,6 +6527,7 @@ struct big_decimal {
     }
     return big_decimal(int_val, INFLATED, scale, prec);
   }
+
   // 按 math_context 舍入 big_decimal.
   static big_decimal do_round(const big_decimal& input, const math_context& mc) {
     return do_round(input.int_val_, input.scale_, mc);
@@ -6531,6 +6541,7 @@ struct big_decimal {
     }
     return (int32_t)as;
   }
+
   // 解析字符序列中的十进制指数部分.
   static int64_t parse_exp(const char* in, int32_t offset, int32_t len) {
     int64_t exp = 0;
@@ -7433,6 +7444,7 @@ struct big_decimal {
     }
   }
 
+  // 加法前预对齐, 在有限精度下保持正确舍入.
   std::pair<big_decimal, big_decimal> pre_align(const big_decimal& augend, int64_t padding,
                                                 const math_context& mc) const {
     big_decimal big;
@@ -7547,6 +7559,7 @@ struct big_decimal {
     return xs.compare_magnitude(big_mul_pow10(ys, raise));
   }
 
+  // 除法快速路径: 小 scale 且低 precision 时使用.
   static big_decimal divide_small_fast_path(int64_t xs, int32_t xscale, int64_t ys, int32_t yscale,
                                             int64_t preferred_scale, const math_context& mc) {
     int32_t mcp = mc.precision();
@@ -7637,6 +7650,7 @@ struct big_decimal {
     return do_round_value(quotient, mc);
   }
 
+  // long 被除数除以 bigint 除数, 按 math_context 舍入.
   static big_decimal divide(int64_t xs, int32_t xscale, const bigint& ys, int32_t yscale, int64_t preferred_scale,
                             const math_context& mc) {
     if (compare_magnitude_normalized(xs, xscale, ys, yscale) > 0) {
@@ -7697,6 +7711,7 @@ struct big_decimal {
                : divide_and_round(bigint::value_of(xs), big_mul_pow10(ys, -raise), scale, rm, scale);
   }
 
+  // bigint 被除数除以 long, 商 scale 固定.
   static big_decimal divide(const bigint& xs, int32_t xscale, int64_t ys, int32_t yscale, int32_t scale,
                             round_mode rm) {
     int32_t raise = check_scale_non_zero((int64_t)(scale) + yscale - xscale);
@@ -7708,6 +7723,7 @@ struct big_decimal {
                                    : divide_and_round(xs, big_mul_pow10(ys, -raise), scale, rm, scale);
   }
 
+  // long 被除数除以 bigint, 商 scale 固定.
   static big_decimal divide(int64_t xs, int32_t xscale, const bigint& ys, int32_t yscale, int32_t scale,
                             round_mode rm) {
     int32_t raise = check_scale_non_zero((int64_t)(scale) + yscale - xscale);
@@ -7717,6 +7733,7 @@ struct big_decimal {
     return divide_and_round(bigint::value_of(xs), big_mul_pow10(ys, -raise), scale, rm, scale);
   }
 
+  // bigint 除以 bigint, 商 scale 固定.
   static big_decimal divide(const bigint& xs, int32_t xscale, const bigint& ys, int32_t yscale, int32_t scale,
                             round_mode rm) {
     int32_t raise = check_scale_non_zero((int64_t)(scale) + yscale - xscale);
@@ -7867,7 +7884,7 @@ struct big_decimal {
                                                1.0e8,  1.0e9,  1.0e10, 1.0e11, 1.0e12, 1.0e13, 1.0e14, 1.0e15,
                                                1.0e16, 1.0e17, 1.0e18, 1.0e19, 1.0e20, 1.0e21, 1.0e22};
 
-  // 包内可见构造.
+  // 返回 this + augend; scale 为 max(this.scale(), augend.scale()).
   big_decimal add(const big_decimal& augend) const {
     if (int_compact_ != INFLATED) {
       if (augend.int_compact_ != INFLATED)
@@ -8422,7 +8439,6 @@ struct big_decimal {
   }
 
   // 数据成员
-  // =====================================================================
 
   // 未缩放值; int_compact 为 INFLATED 时为主存储.
   // 始终与 int_compact_ 同步; int_compact_ == INFLATED 时以此为真值
