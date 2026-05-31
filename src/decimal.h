@@ -8608,6 +8608,11 @@ struct decimal {
     return a == b;
   }
 
+  // 比较值与 scale 是否不完全相等.
+  bool operator!=(const decimal& other) const {
+    return !(*this == other);
+  }
+
   // 返回 this 与 val 的较小值.
   decimal min(const decimal& val) const {
     return compare_to(val) <= 0 ? *this : val;
