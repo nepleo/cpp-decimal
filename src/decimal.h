@@ -5833,6 +5833,22 @@ inline bigint bigint::next_probable_prime() const {
 //   inflated: int_compact_ == INFLATED — int_val_ 存放完整值.
 
 struct decimal {
+  // 未缩放值; int_compact 为 INFLATED 时为主存储.
+  // 始终与 int_compact_ 同步; int_compact_ == INFLATED 时以此为真值
+  bigint int_val_{};
+
+  // scale: 非负时表示小数点右侧位数.
+  int32_t scale_{0};
+
+  // 精度缓存; 0 表示未知.
+  mutable int32_t precision_{0};
+
+  // to_string 结果缓存.
+  mutable std::string string_cache_{};
+
+  // compact 表示; INFLATED 表示已膨胀到 bigint.
+  int64_t int_compact_{0};
+
   // int_compact 的哨兵值, 表示有效数字信息仅可从 int_val 获取.
   static constexpr int64_t INFLATED = INT64_MIN;
 
@@ -5982,13 +5998,402 @@ struct decimal {
   // 常量 0.5, scale 为 1.
   static const decimal ONE_HALF;
 
-  // 内部构造: 同时设置 int_val, int_compact, scale, precision.
+  // --- 构造函数 ---
 
   decimal() = default;
 
-  // int_val_ 与 int_compact_ 同步; INFLATED 表示已膨胀到 bigint.
+  // compact 值可只存 int_compact_; INFLATED 表示真实值存于 int_val_.
   decimal(bigint int_val, int64_t val, int32_t scale, int32_t prec)
       : int_val_(std::move(int_val)), scale_(scale), precision_(prec), int_compact_(val) {
+  }
+
+  // 将字符子序列解析为 decimal, 并按 math_context 舍入.
+  decimal(const char* in, int32_t offset, int32_t len, const math_context& mc = math_context::UNLIMITED) : decimal() {
+    if (len <= 0) {
+      throw std::runtime_error("zero length bigdecimal");
+    }
+    int32_t prec = 0, scl = 0;
+    int64_t rs = 0;
+    bigint rb{};
+    bool is_compact = (len <= MAX_COMPACT_DIGITS);
+    bool isneg = false;
+    if (in[offset] == '-') {
+      isneg = true;
+      offset++;
+      len--;
+    } else if (in[offset] == '+') {
+      offset++;
+      len--;
+    }
+    bool dot = false;
+    int64_t exp_val = 0;
+    int32_t idx = 0;
+    if (is_compact) {
+      for (; len > 0; offset++, len--) {
+        char c = in[offset];
+        if (c == '0') {
+          if (prec == 0)
+            prec = 1;
+          else if (rs != 0) {
+            rs *= 10;
+            ++prec;
+          }
+          if (dot) {
+            ++scl;
+          }
+        } else if (c >= '1' && c <= '9') {
+          int32_t d = c - '0';
+          if (prec != 1 || rs != 0) {
+            ++prec;
+          }
+          rs = rs * 10 + d;
+          if (dot) {
+            ++scl;
+          }
+        } else if (c == '.') {
+          if (dot) {
+            throw std::runtime_error("more than one decimal point");
+          }
+          dot = true;
+        } else if (c == 'e' || c == 'E') {
+          exp_val = parse_exp(in, offset, len);
+          if ((int32_t)exp_val != exp_val) {
+            throw std::runtime_error("exponent overflow");
+          }
+          break;
+        } else
+          throw std::runtime_error(std::string("bad char: ") + c);
+      }
+      if (prec == 0) {
+        throw std::runtime_error("no digits found");
+      }
+      if (exp_val != 0) {
+        scl = adjust_scale(scl, exp_val);
+      }
+      rs = isneg ? -rs : rs;
+      int32_t mcp = mc.precision(), drop = prec - mcp;
+      if (mcp > 0 && drop > 0)
+        while (drop > 0) {
+          scl = check_scale_non_zero((int64_t)scl - drop);
+          rs = divide_and_round_64(rs, LONG_TEN_POWERS_TABLE[drop], mc.get_rounding_mode());
+          prec = long_digit_length(rs);
+          drop = prec - mcp;
+        }
+    } else {
+      std::string coeff_str;
+      coeff_str.reserve((size_t)len);
+      for (; len > 0; offset++, len--) {
+        char c = in[offset];
+        if ((c >= '0' && c <= '9')) {
+          if (c == '0') {
+            if (prec == 0) {
+              coeff_str.push_back(c);
+              prec = 1;
+            } else if (idx != 0) {
+              coeff_str.push_back(c);
+              ++prec;
+              ++idx;
+            }
+          } else {
+            if (prec != 1 || idx != 0) {
+              ++prec;
+            }
+            coeff_str.push_back(c);
+            ++idx;
+          }
+          if (dot) {
+            ++scl;
+          }
+          continue;
+        }
+        if (c == '.') {
+          if (dot) {
+            throw std::runtime_error("more than one decimal point");
+          }
+          dot = true;
+          continue;
+        }
+        if ((c != 'e') && (c != 'E')) {
+          throw std::runtime_error("missing exponential mark");
+        }
+        exp_val = parse_exp(in, offset, len);
+        if ((int32_t)exp_val != exp_val) {
+          throw std::runtime_error("exponent overflow");
+        }
+        break;
+      }
+      if (prec == 0) {
+        throw std::runtime_error("no digits found");
+      }
+      if (exp_val != 0) {
+        scl = adjust_scale(scl, exp_val);
+      }
+      rb = bigint(coeff_str, 10);
+      if (isneg) {
+        rb = rb.negate();
+      }
+      rs = compact_val_for(rb);
+      int32_t mcp = mc.precision();
+      if (mcp > 0 && (prec > mcp)) {
+        if (rs == INFLATED) {
+          int32_t drop = prec - mcp;
+          while (drop > 0) {
+            scl = check_scale_non_zero((int64_t)scl - drop);
+            rb = divide_and_round_by_10pow(rb, drop, mc.get_rounding_mode());
+            rs = compact_val_for(rb);
+            if (rs != INFLATED) {
+              prec = long_digit_length(rs);
+              break;
+            }
+            prec = big_digit_length(rb);
+            drop = prec - mcp;
+          }
+        }
+        if (rs != INFLATED) {
+          int32_t drop = prec - mcp;
+          while (drop > 0) {
+            scl = check_scale_non_zero((int64_t)scl - drop);
+            rs = divide_and_round_64(rs, LONG_TEN_POWERS_TABLE[drop], mc.get_rounding_mode());
+            prec = long_digit_length(rs);
+            drop = prec - mcp;
+          }
+          rb = bigint{};
+        }
+      }
+    }
+    scale_ = scl;
+    precision_ = prec;
+    int_compact_ = rs;
+    int_val_ = (rs == INFLATED) ? rb : bigint{};
+  }
+
+  // 将 C 字符串解析为 decimal.
+  decimal(const char* in) : decimal(in, 0, (int32_t)std::strlen(in)) {
+  }
+
+  // 将 C 字符串解析为 decimal, 并按 math_context 舍入.
+  decimal(const char* in, const math_context& mc) : decimal(in, 0, (int32_t)std::strlen(in), mc) {
+  }
+
+  // 将字符串解析为 decimal.
+  decimal(const std::string& val) : decimal(val.c_str(), 0, (int32_t)val.size()) {
+  }
+
+  // 将字符串解析为 decimal, 并按 math_context 舍入.
+  decimal(const std::string& val, const math_context& mc) : decimal(val.c_str(), 0, (int32_t)val.size(), mc) {
+  }
+
+  // 将 double 转为 decimal, 其值为 double 二进制浮点值的精确十进制表示.
+  decimal(double val) : decimal(val, math_context::UNLIMITED) {
+  }
+
+  // 将 double 转为 decimal 并按 math_context 舍入.
+  decimal(double val, const math_context& mc) : decimal() {
+    if (std::isinf(val) || std::isnan(val)) {
+      throw std::runtime_error("infinite or nan");
+    }
+    uint64_t val_bits;
+    std::memcpy(&val_bits, &val, sizeof(val_bits));
+    int32_t sign = ((val_bits >> 63) == 0 ? 1 : -1);
+    int32_t exponent = (int32_t)((val_bits >> 52) & 0x7ffULL);
+    int64_t significand =
+        (exponent == 0 ? (val_bits & ((1ULL << 52) - 1)) << 1 : (val_bits & ((1ULL << 52) - 1)) | (1ULL << 52));
+    exponent -= 1075;
+    if (significand == 0) {
+      int_val_ = bigint::ZERO;
+      scale_ = 0;
+      int_compact_ = 0;
+      precision_ = 1;
+      return;
+    }
+    while ((significand & 1) == 0) {
+      significand >>= 1;
+      exponent++;
+    }
+    int32_t scl = 0;
+    bigint rb{};
+    int64_t compact_val = sign * significand;
+    if (exponent == 0) {
+      rb = (compact_val == INFLATED) ? bigint::value_of(INFLATED) : bigint{};
+    } else if (exponent < 0) {
+      rb = bigint::value_of(5).pow(-exponent).multiply(bigint(compact_val));
+      scl = -exponent;
+    } else {
+      rb = bigint::TWO.pow(exponent).multiply(bigint(compact_val));
+    }
+    if (exponent != 0) {
+      compact_val = compact_val_for(rb);
+    }
+    int32_t prec = 0;
+    int32_t mcp = mc.precision();
+    if (mcp > 0) {
+      round_mode mode = mc.get_rounding_mode();
+      int32_t drop;
+      if (compact_val == INFLATED) {
+        prec = big_digit_length(rb);
+        drop = prec - mcp;
+        while (drop > 0) {
+          scl = check_scale_non_zero((int64_t)scl - drop);
+          rb = divide_and_round_by_10pow(rb, drop, mode);
+          compact_val = compact_val_for(rb);
+          if (compact_val != INFLATED) {
+            break;
+          }
+          prec = big_digit_length(rb);
+          drop = prec - mcp;
+        }
+      }
+      if (compact_val != INFLATED) {
+        prec = long_digit_length(compact_val);
+        drop = prec - mcp;
+        while (drop > 0) {
+          scl = check_scale_non_zero((int64_t)scl - drop);
+          compact_val = divide_and_round_64(compact_val, LONG_TEN_POWERS_TABLE[drop], mode);
+          prec = long_digit_length(compact_val);
+          drop = prec - mcp;
+        }
+        rb = bigint{};
+      }
+    }
+    int_val_ = rb;
+    int_compact_ = compact_val;
+    scale_ = scl;
+    precision_ = prec;
+  }
+
+  // 将 bigint 转为 decimal; scale 为 0.
+  decimal(const bigint& val) {
+    scale_ = 0;
+    int_val_ = to_strict_bigint(val);
+    int_compact_ = compact_val_for(int_val_);
+  }
+
+  // 将 bigint 转为 decimal 并按 math_context 舍入.
+  decimal(const bigint& val, const math_context& mc) : decimal(to_strict_bigint(val), 0, mc) {
+  }
+
+  // 由未缩放值与 scale 构造 decimal.
+  decimal(const bigint& unscaled_val, int32_t scale) {
+    int_val_ = to_strict_bigint(unscaled_val);
+    int_compact_ = compact_val_for(int_val_);
+    scale_ = scale;
+  }
+
+  // 由未缩放值与 scale 构造并按 math_context 舍入.
+  decimal(const bigint& unscaled_val, int32_t scale, const math_context& mc) : decimal() {
+    bigint uv = to_strict_bigint(unscaled_val);
+    int64_t compact_val = compact_val_for(uv);
+    int32_t mcp = mc.precision();
+    int32_t prec = 0;
+    if (mcp > 0) {
+      round_mode mode = mc.get_rounding_mode();
+      if (compact_val == INFLATED) {
+        prec = big_digit_length(uv);
+        int32_t drop = prec - mcp;
+        while (drop > 0) {
+          scale = check_scale_non_zero((int64_t)scale - drop);
+          uv = divide_and_round_by_10pow(uv, drop, mode);
+          compact_val = compact_val_for(uv);
+          if (compact_val != INFLATED) {
+            break;
+          }
+          prec = big_digit_length(uv);
+          drop = prec - mcp;
+        }
+      }
+      if (compact_val != INFLATED) {
+        prec = long_digit_length(compact_val);
+        int32_t drop = prec - mcp;
+        while (drop > 0) {
+          scale = check_scale_non_zero((int64_t)scale - drop);
+          compact_val = divide_and_round_64(compact_val, LONG_TEN_POWERS_TABLE[drop], mode);
+          prec = long_digit_length(compact_val);
+          drop = prec - mcp;
+        }
+        uv = bigint{};
+      }
+    }
+    int_val_ = uv;
+    int_compact_ = compact_val;
+    scale_ = scale;
+    precision_ = prec;
+  }
+
+  // 将 int 转为 decimal; scale 为 0.
+  decimal(int32_t val) {
+    int_compact_ = val;
+    scale_ = 0;
+    int_val_ = bigint{};
+  }
+
+  // 将 int 转为 decimal 并按 math_context 舍入.
+  decimal(int32_t val, const math_context& mc) : decimal() {
+    int32_t mcp = mc.precision();
+    int64_t compact_val = val;
+    int32_t scl = 0;
+    int32_t prec = 0;
+    if (mcp > 0) {
+      prec = long_digit_length(compact_val);
+      int32_t drop = prec - mcp;
+      round_mode mode = mc.get_rounding_mode();
+      while (drop > 0) {
+        scl = check_scale_non_zero((int64_t)scl - drop);
+        compact_val = divide_and_round_64(compact_val, LONG_TEN_POWERS_TABLE[drop], mode);
+        prec = long_digit_length(compact_val);
+        drop = prec - mcp;
+      }
+    }
+    int_val_ = bigint{};
+    int_compact_ = compact_val;
+    scale_ = scl;
+    precision_ = prec;
+  }
+
+  // 将 long 转为 decimal; scale 为 0.
+  decimal(int64_t val) {
+    int_compact_ = val;
+    int_val_ = (val == INFLATED) ? bigint::value_of(INFLATED) : bigint{};
+    scale_ = 0;
+  }
+
+  // 将 long 转为 decimal 并按 math_context 舍入.
+  decimal(int64_t val, const math_context& mc) : decimal() {
+    int32_t mcp = mc.precision();
+    round_mode mode = mc.get_rounding_mode();
+    int32_t prec = 0;
+    int32_t scl = 0;
+    bigint rb = (val == INFLATED) ? bigint::value_of(INFLATED) : bigint{};
+    if (mcp > 0) {
+      if (val == INFLATED) {
+        prec = 19;
+        int32_t drop = prec - mcp;
+        while (drop > 0) {
+          scl = check_scale_non_zero((int64_t)scl - drop);
+          rb = divide_and_round_by_10pow(rb, drop, mode);
+          val = compact_val_for(rb);
+          if (val != INFLATED) {
+            break;
+          }
+          prec = big_digit_length(rb);
+          drop = prec - mcp;
+        }
+      }
+      if (val != INFLATED) {
+        prec = long_digit_length(val);
+        int32_t drop = prec - mcp;
+        while (drop > 0) {
+          scl = check_scale_non_zero((int64_t)scl - drop);
+          val = divide_and_round_64(val, LONG_TEN_POWERS_TABLE[drop], mode);
+          prec = long_digit_length(val);
+          drop = prec - mcp;
+        }
+        rb = bigint{};
+      }
+    }
+    int_val_ = rb;
+    int_compact_ = val;
+    scale_ = scl;
+    precision_ = prec;
   }
 
   // 返回 long 绝对值的十进制位数.
@@ -6729,395 +7134,6 @@ struct decimal {
       c = in[offset];
     }
     return negexp ? -exp : exp;
-  }
-
-  // 将字符子序列解析为 decimal, 并按 math_context 舍入.
-  decimal(const char* in, int32_t offset, int32_t len, const math_context& mc = math_context::UNLIMITED) : decimal() {
-    if (len <= 0) {
-      throw std::runtime_error("zero length bigdecimal");
-    }
-    int32_t prec = 0, scl = 0;
-    int64_t rs = 0;
-    bigint rb{};
-    bool is_compact = (len <= MAX_COMPACT_DIGITS);
-    bool isneg = false;
-    if (in[offset] == '-') {
-      isneg = true;
-      offset++;
-      len--;
-    } else if (in[offset] == '+') {
-      offset++;
-      len--;
-    }
-    bool dot = false;
-    int64_t exp_val = 0;
-    int32_t idx = 0;
-    if (is_compact) {
-      for (; len > 0; offset++, len--) {
-        char c = in[offset];
-        if (c == '0') {
-          if (prec == 0)
-            prec = 1;
-          else if (rs != 0) {
-            rs *= 10;
-            ++prec;
-          }
-          if (dot) {
-            ++scl;
-          }
-        } else if (c >= '1' && c <= '9') {
-          int32_t d = c - '0';
-          if (prec != 1 || rs != 0) {
-            ++prec;
-          }
-          rs = rs * 10 + d;
-          if (dot) {
-            ++scl;
-          }
-        } else if (c == '.') {
-          if (dot) {
-            throw std::runtime_error("more than one decimal point");
-          }
-          dot = true;
-        } else if (c == 'e' || c == 'E') {
-          exp_val = parse_exp(in, offset, len);
-          if ((int32_t)exp_val != exp_val) {
-            throw std::runtime_error("exponent overflow");
-          }
-          break;
-        } else
-          throw std::runtime_error(std::string("bad char: ") + c);
-      }
-      if (prec == 0) {
-        throw std::runtime_error("no digits found");
-      }
-      if (exp_val != 0) {
-        scl = adjust_scale(scl, exp_val);
-      }
-      rs = isneg ? -rs : rs;
-      int32_t mcp = mc.precision(), drop = prec - mcp;
-      if (mcp > 0 && drop > 0)
-        while (drop > 0) {
-          scl = check_scale_non_zero((int64_t)scl - drop);
-          rs = divide_and_round_64(rs, LONG_TEN_POWERS_TABLE[drop], mc.get_rounding_mode());
-          prec = long_digit_length(rs);
-          drop = prec - mcp;
-        }
-    } else {
-      std::string coeff_str;
-      coeff_str.reserve((size_t)len);
-      for (; len > 0; offset++, len--) {
-        char c = in[offset];
-        if ((c >= '0' && c <= '9')) {
-          if (c == '0') {
-            if (prec == 0) {
-              coeff_str.push_back(c);
-              prec = 1;
-            } else if (idx != 0) {
-              coeff_str.push_back(c);
-              ++prec;
-              ++idx;
-            }
-          } else {
-            if (prec != 1 || idx != 0) {
-              ++prec;
-            }
-            coeff_str.push_back(c);
-            ++idx;
-          }
-          if (dot) {
-            ++scl;
-          }
-          continue;
-        }
-        if (c == '.') {
-          if (dot) {
-            throw std::runtime_error("more than one decimal point");
-          }
-          dot = true;
-          continue;
-        }
-        if ((c != 'e') && (c != 'E')) {
-          throw std::runtime_error("missing exponential mark");
-        }
-        exp_val = parse_exp(in, offset, len);
-        if ((int32_t)exp_val != exp_val) {
-          throw std::runtime_error("exponent overflow");
-        }
-        break;
-      }
-      if (prec == 0) {
-        throw std::runtime_error("no digits found");
-      }
-      if (exp_val != 0) {
-        scl = adjust_scale(scl, exp_val);
-      }
-      rb = bigint(coeff_str, 10);
-      if (isneg) {
-        rb = rb.negate();
-      }
-      rs = compact_val_for(rb);
-      int32_t mcp = mc.precision();
-      if (mcp > 0 && (prec > mcp)) {
-        if (rs == INFLATED) {
-          int32_t drop = prec - mcp;
-          while (drop > 0) {
-            scl = check_scale_non_zero((int64_t)scl - drop);
-            rb = divide_and_round_by_10pow(rb, drop, mc.get_rounding_mode());
-            rs = compact_val_for(rb);
-            if (rs != INFLATED) {
-              prec = long_digit_length(rs);
-              break;
-            }
-            prec = big_digit_length(rb);
-            drop = prec - mcp;
-          }
-        }
-        if (rs != INFLATED) {
-          int32_t drop = prec - mcp;
-          while (drop > 0) {
-            scl = check_scale_non_zero((int64_t)scl - drop);
-            rs = divide_and_round_64(rs, LONG_TEN_POWERS_TABLE[drop], mc.get_rounding_mode());
-            prec = long_digit_length(rs);
-            drop = prec - mcp;
-          }
-          rb = bigint{};
-        }
-      }
-    }
-    scale_ = scl;
-    precision_ = prec;
-    int_compact_ = rs;
-    int_val_ = (rs == INFLATED) ? rb : bigint(rs);
-  }
-
-  // 将 C 字符串解析为 decimal.
-  decimal(const char* in) : decimal(in, 0, (int32_t)std::strlen(in)) {
-  }
-
-  // 将 C 字符串解析为 decimal, 并按 math_context 舍入.
-  decimal(const char* in, const math_context& mc) : decimal(in, 0, (int32_t)std::strlen(in), mc) {
-  }
-
-  // 将字符串解析为 decimal.
-  decimal(const std::string& val) : decimal(val.c_str(), 0, (int32_t)val.size()) {
-  }
-
-  // 将字符串解析为 decimal, 并按 math_context 舍入.
-  decimal(const std::string& val, const math_context& mc) : decimal(val.c_str(), 0, (int32_t)val.size(), mc) {
-  }
-
-  // 将 double 转为 decimal, 其值为 double 二进制浮点值的精确十进制表示.
-  decimal(double val) : decimal(val, math_context::UNLIMITED) {
-  }
-
-  // 将 double 转为 decimal 并按 math_context 舍入.
-  decimal(double val, const math_context& mc) : decimal() {
-    if (std::isinf(val) || std::isnan(val)) {
-      throw std::runtime_error("infinite or nan");
-    }
-    uint64_t val_bits;
-    std::memcpy(&val_bits, &val, sizeof(val_bits));
-    int32_t sign = ((val_bits >> 63) == 0 ? 1 : -1);
-    int32_t exponent = (int32_t)((val_bits >> 52) & 0x7ffULL);
-    int64_t significand =
-        (exponent == 0 ? (val_bits & ((1ULL << 52) - 1)) << 1 : (val_bits & ((1ULL << 52) - 1)) | (1ULL << 52));
-    exponent -= 1075;
-    if (significand == 0) {
-      int_val_ = bigint::ZERO;
-      scale_ = 0;
-      int_compact_ = 0;
-      precision_ = 1;
-      return;
-    }
-    while ((significand & 1) == 0) {
-      significand >>= 1;
-      exponent++;
-    }
-    int32_t scl = 0;
-    bigint rb{};
-    int64_t compact_val = sign * significand;
-    if (exponent == 0) {
-      rb = (compact_val == INFLATED) ? bigint::value_of(INFLATED) : bigint{};
-    } else if (exponent < 0) {
-      rb = bigint::value_of(5).pow(-exponent).multiply(bigint(compact_val));
-      scl = -exponent;
-    } else {
-      rb = bigint::TWO.pow(exponent).multiply(bigint(compact_val));
-    }
-    if (exponent != 0) {
-      compact_val = compact_val_for(rb);
-    }
-    int32_t prec = 0;
-    int32_t mcp = mc.precision();
-    if (mcp > 0) {
-      round_mode mode = mc.get_rounding_mode();
-      int32_t drop;
-      if (compact_val == INFLATED) {
-        prec = big_digit_length(rb);
-        drop = prec - mcp;
-        while (drop > 0) {
-          scl = check_scale_non_zero((int64_t)scl - drop);
-          rb = divide_and_round_by_10pow(rb, drop, mode);
-          compact_val = compact_val_for(rb);
-          if (compact_val != INFLATED) {
-            break;
-          }
-          prec = big_digit_length(rb);
-          drop = prec - mcp;
-        }
-      }
-      if (compact_val != INFLATED) {
-        prec = long_digit_length(compact_val);
-        drop = prec - mcp;
-        while (drop > 0) {
-          scl = check_scale_non_zero((int64_t)scl - drop);
-          compact_val = divide_and_round_64(compact_val, LONG_TEN_POWERS_TABLE[drop], mode);
-          prec = long_digit_length(compact_val);
-          drop = prec - mcp;
-        }
-        rb = bigint{};
-      }
-    }
-    int_val_ = rb;
-    int_compact_ = compact_val;
-    scale_ = scl;
-    precision_ = prec;
-  }
-
-  // 将 bigint 转为 decimal; scale 为 0.
-  decimal(const bigint& val) {
-    scale_ = 0;
-    int_val_ = to_strict_bigint(val);
-    int_compact_ = compact_val_for(int_val_);
-  }
-
-  // 将 bigint 转为 decimal 并按 math_context 舍入.
-  decimal(const bigint& val, const math_context& mc) : decimal(to_strict_bigint(val), 0, mc) {
-  }
-
-  // 由未缩放值与 scale 构造 decimal.
-  decimal(const bigint& unscaled_val, int32_t scale) {
-    int_val_ = to_strict_bigint(unscaled_val);
-    int_compact_ = compact_val_for(int_val_);
-    scale_ = scale;
-  }
-
-  // 由未缩放值与 scale 构造并按 math_context 舍入.
-  decimal(const bigint& unscaled_val, int32_t scale, const math_context& mc) : decimal() {
-    bigint uv = to_strict_bigint(unscaled_val);
-    int64_t compact_val = compact_val_for(uv);
-    int32_t mcp = mc.precision();
-    int32_t prec = 0;
-    if (mcp > 0) {
-      round_mode mode = mc.get_rounding_mode();
-      if (compact_val == INFLATED) {
-        prec = big_digit_length(uv);
-        int32_t drop = prec - mcp;
-        while (drop > 0) {
-          scale = check_scale_non_zero((int64_t)scale - drop);
-          uv = divide_and_round_by_10pow(uv, drop, mode);
-          compact_val = compact_val_for(uv);
-          if (compact_val != INFLATED) {
-            break;
-          }
-          prec = big_digit_length(uv);
-          drop = prec - mcp;
-        }
-      }
-      if (compact_val != INFLATED) {
-        prec = long_digit_length(compact_val);
-        int32_t drop = prec - mcp;
-        while (drop > 0) {
-          scale = check_scale_non_zero((int64_t)scale - drop);
-          compact_val = divide_and_round_64(compact_val, LONG_TEN_POWERS_TABLE[drop], mode);
-          prec = long_digit_length(compact_val);
-          drop = prec - mcp;
-        }
-        uv = bigint{};
-      }
-    }
-    int_val_ = uv;
-    int_compact_ = compact_val;
-    scale_ = scale;
-    precision_ = prec;
-  }
-
-  // 将 int 转为 decimal; scale 为 0.
-  decimal(int32_t val) {
-    int_compact_ = val;
-    scale_ = 0;
-    int_val_ = bigint{};
-  }
-
-  // 将 int 转为 decimal 并按 math_context 舍入.
-  decimal(int32_t val, const math_context& mc) : decimal() {
-    int32_t mcp = mc.precision();
-    int64_t compact_val = val;
-    int32_t scl = 0;
-    int32_t prec = 0;
-    if (mcp > 0) {
-      prec = long_digit_length(compact_val);
-      int32_t drop = prec - mcp;
-      round_mode mode = mc.get_rounding_mode();
-      while (drop > 0) {
-        scl = check_scale_non_zero((int64_t)scl - drop);
-        compact_val = divide_and_round_64(compact_val, LONG_TEN_POWERS_TABLE[drop], mode);
-        prec = long_digit_length(compact_val);
-        drop = prec - mcp;
-      }
-    }
-    int_val_ = bigint{};
-    int_compact_ = compact_val;
-    scale_ = scl;
-    precision_ = prec;
-  }
-
-  // 将 long 转为 decimal; scale 为 0.
-  decimal(int64_t val) {
-    int_compact_ = val;
-    int_val_ = (val == INFLATED) ? bigint::value_of(INFLATED) : bigint{};
-    scale_ = 0;
-  }
-
-  // 将 long 转为 decimal 并按 math_context 舍入.
-  decimal(int64_t val, const math_context& mc) : decimal() {
-    int32_t mcp = mc.precision();
-    round_mode mode = mc.get_rounding_mode();
-    int32_t prec = 0;
-    int32_t scl = 0;
-    bigint rb = (val == INFLATED) ? bigint::value_of(INFLATED) : bigint{};
-    if (mcp > 0) {
-      if (val == INFLATED) {
-        prec = 19;
-        int32_t drop = prec - mcp;
-        while (drop > 0) {
-          scl = check_scale_non_zero((int64_t)scl - drop);
-          rb = divide_and_round_by_10pow(rb, drop, mode);
-          val = compact_val_for(rb);
-          if (val != INFLATED) {
-            break;
-          }
-          prec = big_digit_length(rb);
-          drop = prec - mcp;
-        }
-      }
-      if (val != INFLATED) {
-        prec = long_digit_length(val);
-        int32_t drop = prec - mcp;
-        while (drop > 0) {
-          scl = check_scale_non_zero((int64_t)scl - drop);
-          val = divide_and_round_64(val, LONG_TEN_POWERS_TABLE[drop], mode);
-          prec = long_digit_length(val);
-          drop = prec - mcp;
-        }
-        rb = bigint{};
-      }
-    }
-    int_val_ = rb;
-    int_compact_ = val;
-    scale_ = scl;
-    precision_ = prec;
   }
 
   // 返回符号函数: 负数为 -1, 零为 0, 正数为 1.
@@ -8151,29 +8167,34 @@ struct decimal {
     }
     const int32_t coeff_len = (int32_t)(coeff.size());
     const int64_t adjusted = -(int64_t)(scale_) + (coeff_len - 1);
+    const int32_t sign = signum();
 
     std::string out;
-    if (signum() < 0) {
+    const size_t sign_len = (sign < 0) ? 1u : 0u;
+    if (sign < 0) {
       out.push_back('-');
     }
 
     if (scale_ >= 0 && adjusted >= -6) {
       const int32_t pad = scale_ - coeff_len;
       if (pad >= 0) {
+        out.reserve(sign_len + 2u + (size_t)pad + coeff.size());
         out += "0.";
         out.append((size_t)(pad), '0');
         out += coeff;
       } else {
-        out += coeff.substr(0, (size_t)(-pad));
+        out.reserve(sign_len + coeff.size() + 1u);
+        out.append(coeff, 0, (size_t)(-pad));
         out.push_back('.');
-        out += coeff.substr((size_t)(-pad));
+        out.append(coeff, (size_t)(-pad), std::string::npos);
       }
     } else {
       if (sci) {
+        out.reserve(sign_len + coeff.size() + 8u);
         out.push_back(coeff[0]);
         if (coeff_len > 1) {
           out.push_back('.');
-          out += coeff.substr(1);
+          out.append(coeff, 1, std::string::npos);
         }
       } else {
         int32_t sig = (int32_t)(adjusted % 3);
@@ -8182,7 +8203,8 @@ struct decimal {
         }
         int64_t eng_adjusted = adjusted - sig;
         ++sig;
-        if (signum() == 0) {
+        out.reserve(sign_len + coeff.size() + (size_t)std::max<int32_t>(0, sig - coeff_len) + 8u);
+        if (sign == 0) {
           switch (sig) {
             case 1:
               out.push_back('0');
@@ -8200,13 +8222,11 @@ struct decimal {
           }
         } else if (sig >= coeff_len) {
           out += coeff;
-          for (int32_t i = sig - coeff_len; i > 0; --i) {
-            out.push_back('0');
-          }
+          out.append((size_t)(sig - coeff_len), '0');
         } else {
-          out += coeff.substr(0, (size_t)(sig));
+          out.append(coeff, 0, (size_t)(sig));
           out.push_back('.');
-          out += coeff.substr((size_t)(sig));
+          out.append(coeff, (size_t)(sig), std::string::npos);
         }
         if (eng_adjusted != 0) {
           out.push_back('E');
@@ -8235,28 +8255,43 @@ struct decimal {
       return int_string;
     }
     bool neg = !int_string.empty() && int_string[0] == '-';
-    std::string digits = neg ? int_string.substr(1) : int_string;
-    int32_t precision = (int32_t)(digits.size());
+    const size_t digit_offset = neg ? 1u : 0u;
+    const size_t digit_len = int_string.size() - digit_offset;
+    int32_t precision = (int32_t)(digit_len);
     if (scale > 0) {
       if (scale >= precision) {
-        std::string out = neg ? "-0." : "0.";
+        std::string out;
+        out.reserve((neg ? 3u : 2u) + (size_t)(scale - precision) + digit_len);
+        if (neg) {
+          out += "-0.";
+        } else {
+          out += "0.";
+        }
         out.append((size_t)(scale - precision), '0');
-        out += digits;
+        out.append(int_string, digit_offset, std::string::npos);
         return out;
       }
-      std::string out = neg ? "-" : "";
-      out += digits.substr(0, precision - scale);
+      std::string out;
+      out.reserve((neg ? 1u : 0u) + digit_len + 1u);
+      if (neg) {
+        out.push_back('-');
+      }
+      out.append(int_string, digit_offset, (size_t)(precision - scale));
       out.push_back('.');
-      out += digits.substr(precision - scale);
+      out.append(int_string, digit_offset + (size_t)(precision - scale), std::string::npos);
       return out;
     }
     // scale < 0: 无小数点. 零值无视负 scale, 直接返回 "0" (同 JDK toPlainString).
-    if (digits == "0") {
+    if (digit_len == 1 && int_string[digit_offset] == '0') {
       return "0";
     }
-    std::string out = neg ? "-" : "";
-    out += digits;
-    out.append((size_t)(-scale), '0');
+    std::string out;
+    out.reserve((neg ? 1u : 0u) + digit_len + (size_t)(-(int64_t)scale));
+    if (neg) {
+      out.push_back('-');
+    }
+    out.append(int_string, digit_offset, std::string::npos);
+    out.append((size_t)(-(int64_t)scale), '0');
     return out;
   }
 
@@ -8882,22 +8917,6 @@ struct decimal {
   std::string to_plain_string() const {
     return get_value_string(int_compact_, int_val_, scale_);
   }
-
-  // 未缩放值; int_compact 为 INFLATED 时为主存储.
-  // 始终与 int_compact_ 同步; int_compact_ == INFLATED 时以此为真值
-  bigint int_val_{};
-
-  // scale: 非负时表示小数点右侧位数.
-  int32_t scale_{0};
-
-  // 精度缓存; 0 表示未知.
-  mutable int32_t precision_{0};
-
-  // to_string 结果缓存.
-  mutable std::string string_cache_{};
-
-  // compact 表示; INFLATED 表示已膨胀到 bigint.
-  int64_t int_compact_{0};
 };
 
 // 预缓存 [0, 10] 的 decimal 常量.
