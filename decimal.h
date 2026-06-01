@@ -383,15 +383,21 @@ struct jarray {
 // arraycopy(src, srcPos, dst, dstPos, len)
 template <typename T>
 void jarray_copy(const jarray<T>& src, int src_pos, jarray<T>& dst, int dst_pos, int len) {
-  assert(src_pos >= 0);
-  assert(dst_pos >= 0);
-  assert(len >= 0);
-  assert(src_pos + len <= src.length());
-  assert(dst_pos + len <= dst.length());
+  if (src_pos < 0 || dst_pos < 0 || len < 0) {
+    throw std::out_of_range("jarray_copy: negative index or length");
+  }
+
+  const int64_t src_end = static_cast<int64_t>(src_pos) + len;
+  const int64_t dst_end = static_cast<int64_t>(dst_pos) + len;
+  if (src_end > src.length() || dst_end > dst.length()) {
+    throw std::out_of_range("jarray_copy: range out of bounds");
+  }
+
   if (len == 0) {
     return;
   }
-  std::memmove(dst.data() + dst_pos, src.data() + src_pos, (size_t)(len) * sizeof(T));
+
+  std::memmove(dst.data() + dst_pos, src.data() + src_pos, static_cast<std::size_t>(len) * sizeof(T));
 }
 
 // mutable_bigint
@@ -3029,6 +3035,9 @@ struct bigint {
 
   // 返回低 n 个 limb 组成的新 bigint.
   bigint get_lower(int32_t n) const {
+    if (n <= 0) {
+      return ZERO;
+    }
     const int32_t len = mag_.length();
     if (len <= n) {
       return abs();
