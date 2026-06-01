@@ -182,7 +182,7 @@ struct math_context {
 
   // 返回 hash code.
   int hash_code() const {
-    return precision_ + (int)(rounding_mode_)*59;
+    return precision_ + (int)(rounding_mode_) * 59;
   }
 
   int precision_{0};
@@ -1774,7 +1774,7 @@ struct mutable_bigint {
     if (int_len_ == 0) {
       return 0;
     }
-    return (uint64_t)(int_len_)*32 - number_of_leading_zeros(value_[offset_]);
+    return (uint64_t)(int_len_) * 32 - number_of_leading_zeros(value_[offset_]);
   }
 
   // 将当前数右移 n bit,结果保持规范形式.
@@ -4702,7 +4702,7 @@ struct bigint {
 
     jarray<uint32_t> result(((to - from) >> 2) + 1);
 
-    uint32_t d0 = (uint32_t)(b)&0xffU;
+    uint32_t d0 = (uint32_t)(b) & 0xffU;
     while (((to - from) & 0x3) != 0) {
       d0 = (d0 << 8) | (a[from++] & 0xffU);
     }
@@ -4732,17 +4732,17 @@ struct bigint {
     for (; b == -1 && from < to; b = (int8_t)(a[from++])) {
     }
 
-    uint32_t d0 = (0xffffffffU << 8) | ((uint32_t)(b)&0xffU);
+    uint32_t d0 = (0xffffffffU << 8) | ((uint32_t)(b) & 0xffU);
     while (((to - from) & 0x3) != 0) {
       b = (int8_t)(a[from++]);
-      d0 = (d0 << 8) | ((uint32_t)(b)&0xffU);
+      d0 = (d0 << 8) | ((uint32_t)(b) & 0xffU);
     }
     const int32_t f = from;
 
     for (; b == 0 && from < to; b = (int8_t)(a[from++])) {
     }
 
-    uint32_t d = (uint32_t)(b)&0xffU;
+    uint32_t d = (uint32_t)(b) & 0xffU;
     while (((to - from) & 0x3) != 0) {
       d = (d << 8) | (a[from++] & 0xffU);
     }
@@ -5990,6 +5990,8 @@ struct decimal {
   static const decimal ZERO;
   // 常量 1, scale 为 0.
   static const decimal ONE;
+  // 常量 2, scale 为 0.
+  static const decimal TWO;
   // 常量 10, scale 为 0.
   static const decimal TEN;
 
@@ -7278,6 +7280,22 @@ struct decimal {
   // 返回未缩放值, 即 this * 10^this.scale().
   bigint unscaled_value() const {
     return inflated();
+  }
+
+  // 返回未缩放的 int64 表示; compact 直接返回, inflated 时按 bigint::long_value 截断低 64 位.
+  int64_t unscaled_long_value() const {
+    if (int_compact_ != INFLATED) {
+      return int_compact_;
+    }
+    return int_val_.long_value();
+  }
+
+  // 返回未缩放的 int64 表示; 无法完整放入 int64_t 时抛异常.
+  int64_t unscaled_long_value_exact() const {
+    if (int_compact_ != INFLATED) {
+      return int_compact_;
+    }
+    return int_val_.long_value_exact();
   }
 
   // 转换为 bigint; 丢弃小数部分, 可能丢失精度信息.
@@ -8964,6 +8982,9 @@ inline const decimal decimal::ZERO = ZERO_THROUGH_TEN[0];
 
 // 常量 ONE.
 inline const decimal decimal::ONE = ZERO_THROUGH_TEN[1];
+
+// 常量 TWO.
+inline const decimal decimal::TWO = ZERO_THROUGH_TEN[2];
 
 // 常量 TEN.
 inline const decimal decimal::TEN = ZERO_THROUGH_TEN[10];
