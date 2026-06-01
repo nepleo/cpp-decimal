@@ -8613,7 +8613,12 @@ struct decimal {
     return (xsign > 0) ? cmp : -cmp;
   }
 
-  // 比较值与 scale 是否均相等; 2.0 与 2.00 不相等.
+  // 比较值与 scale 是否均相等; 2.0 与 2.00 不相等; scale-sensitive equality.
+  bool equals(const decimal& other) const {
+    return *this == other;
+  }
+
+  // 比较值与 scale 是否均相等; 2.0 与 2.00 不相等; scale-sensitive equality.
   bool operator==(const decimal& other) const {
     if (scale_ != other.scale_) {
       return false;
