@@ -15,6 +15,7 @@
 #include <random>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <type_traits>
 #include <utility>
 #include <vector>
@@ -6192,6 +6193,14 @@ struct decimal {
 
   // 将字符串解析为 decimal, 并按 math_context 舍入.
   decimal(const std::string& val, const math_context& mc) : decimal(val.c_str(), 0, (int32_t)val.size(), mc) {
+  }
+
+  // 将字符串视图解析为 decimal.
+  decimal(std::string_view val) : decimal(val.data(), 0, (int32_t)val.size()) {
+  }
+
+  // 将字符串视图解析为 decimal, 并按 math_context 舍入.
+  decimal(std::string_view val, const math_context& mc) : decimal(val.data(), 0, (int32_t)val.size(), mc) {
   }
 
   // 将 double 转为 decimal, 其值为 double 二进制浮点值的精确十进制表示.
